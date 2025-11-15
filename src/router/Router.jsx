@@ -7,6 +7,8 @@ import AddCrops from "../pages/AddCrops";
 import MyInterest from "../pages/MyInterest";
 import MyPost from "../pages/MyPost";
 import Profile from "../pages/Profile";
+import Login from "../components/login/Login";
+import Registration from "../components/registration/Registration";
 
 const Router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const Router = createBrowserRouter([
         element: <Profile></Profile>,
       },
     ],
+  },
+  {
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/register",
+    Component: Registration,
   },
 ]);
 export default Router;
