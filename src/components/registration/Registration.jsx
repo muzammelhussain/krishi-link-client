@@ -1,10 +1,13 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router";
 import { updateProfile } from "firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Registration = () => {
-  const { signInWithGoogle, setUser, createUser } = use(AuthContext);
+  const [showPass, setShowPass] = useState(false);
+  const { signInWithGoogle, user, setUser, createUser } = use(AuthContext);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -14,6 +17,23 @@ const Registration = () => {
     const photo = form.photo.value.trim();
     const email = form.email.value.trim();
     const pass = form.password.value;
+
+    if (!name || !photo || !email || !pass) {
+      toast.error("Please fill in all fields!");
+      return;
+    }
+    if (pass.length < 6) {
+      toast.error("Password must be at least 6 characters long!");
+      return;
+    }
+    if (!/[A-Z]/.test(pass)) {
+      toast.error("Password must contain at least one uppercase letter!");
+      return;
+    }
+    if (!/[a-z]/.test(pass)) {
+      toast.error("Password must contain at least one lowercase letter!");
+      return;
+    }
 
     createUser(email, pass)
       .then((res) => {
@@ -42,6 +62,7 @@ const Registration = () => {
             .then((res) => res.json())
             .then((data) => {
               console.log("User saved to DB:", data);
+              toast.success("Registration successful!");
 
               //Set user in your Auth Context (optional but recommended)
               setUser({
@@ -54,13 +75,14 @@ const Registration = () => {
       })
       .catch((error) => {
         console.log("Registration error:", error);
+        toast.error(error.message || "Registration failed!");
       });
   };
 
   const handleGoogleSignUp = () => {
     signInWithGoogle()
       .then((res) => {
-        console.log(res.user);
+        const currentUser = res.user;
         const newUser = {
           name: res.user.displayName,
           email: res.user.email,
@@ -76,10 +98,13 @@ const Registration = () => {
           .then((res) => res.json())
           .then((data) => {
             console.log("data after user save", data);
-            setUser(data);
+            setUser(currentUser);
+            console.log(currentUser);
+            toast.success("Signed in with Google!");
           });
       })
       .catch((error) => {
+        toast.error(error.message);
         console.log(error);
       });
   };
@@ -122,18 +147,18 @@ const Registration = () => {
                   <div className="relative">
                     <input
                       name="password"
-                      type="password"
+                      type={showPass ? "text" : "password"}
                       className="input w-full pr-10"
                       placeholder="Password"
                       required
                     />
-                    {/* <button
+                    <button
                       type="button"
                       onClick={() => setShowPass(!showPass)}
                       className="absolute right-3 top-3 text-gray-500"
                     >
                       {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button> */}
+                    </button>
                   </div>
 
                   <button type="submit" className="btn btn-neutral mt-4">

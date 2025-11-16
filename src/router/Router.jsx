@@ -11,6 +11,7 @@ import Login from "../components/login/Login";
 import Registration from "../components/registration/Registration";
 
 import Test from "../pages/Test";
+import ResetPass from "../resetPassword/resetPass";
 
 const Router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const Router = createBrowserRouter([
   {
     path: "/register",
     Component: Registration,
+  },
+  {
+    path: "/forget-password",
+    Component: ResetPass,
   },
 ]);
 export default Router;

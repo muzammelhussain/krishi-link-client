@@ -1,7 +1,16 @@
-import React from "react";
+import React, { use } from "react";
 import { NavLink } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Header = () => {
+  const { user, userLogout } = use(AuthContext);
+  console.log(user);
+  // const handleLogout = () => {
+  //   userLogout();
+  //   toast.success("Logout successful!");
+  // };
+
   const links = (
     <>
       <li>
