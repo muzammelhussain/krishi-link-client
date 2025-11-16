@@ -10,6 +10,8 @@ import Profile from "../pages/Profile";
 import Login from "../components/login/Login";
 import Registration from "../components/registration/Registration";
 
+import Test from "../pages/Test";
+
 const Router = createBrowserRouter([
   {
     path: "/",

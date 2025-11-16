@@ -1,13 +1,83 @@
 import React, { use } from "react";
-import { AuthContext } from "../../context/Authcontext";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router";
+import { updateProfile } from "firebase/auth";
 
 const Registration = () => {
-  const { signInWithGoogle } = use(AuthContext);
+  const { signInWithGoogle, setUser, createUser } = use(AuthContext);
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const name = form.name.value.trim();
+    const photo = form.photo.value.trim();
+    const email = form.email.value.trim();
+    const pass = form.password.value;
+
+    createUser(email, pass)
+      .then((res) => {
+        const createdUser = res.user;
+
+        //  Update Firebase profile
+        updateProfile(createdUser, {
+          displayName: name,
+          photoURL: photo,
+        }).then(() => {
+          // Build the user object to save in database
+          const newUser = {
+            name: name,
+            email: email,
+            image: photo,
+          };
+
+          // Save user to MongoDB
+          fetch("http://localhost:3000/users", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("User saved to DB:", data);
+
+              //Set user in your Auth Context (optional but recommended)
+              setUser({
+                ...createdUser,
+                displayName: name,
+                photoURL: photo,
+              });
+            });
+        });
+      })
+      .catch((error) => {
+        console.log("Registration error:", error);
+      });
+  };
 
   const handleGoogleSignUp = () => {
     signInWithGoogle()
       .then((res) => {
         console.log(res.user);
+        const newUser = {
+          name: res.user.displayName,
+          email: res.user.email,
+          image: res.user.photoURL,
+        };
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("data after user save", data);
+            setUser(data);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -22,7 +92,7 @@ const Registration = () => {
           </div>
           <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
             <div className="card-body">
-              <form>
+              <form onSubmit={handleRegister}>
                 <fieldset className="fieldset">
                   <label className="label">Your Name</label>
                   <input
@@ -66,13 +136,9 @@ const Registration = () => {
                     </button> */}
                   </div>
 
-                  {/* <button
-                    type="submit"
-                    className="btn btn-neutral mt-4"
-                    disabled={loading}
-                  >
-                    {loading ? "Registering..." : "Register"}
-                  </button> */}
+                  <button type="submit" className="btn btn-neutral mt-4">
+                    Register
+                  </button>
 
                   <p className="font-semibold text-center my-6">
                     Already have an account?
