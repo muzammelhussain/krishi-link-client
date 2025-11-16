@@ -19,20 +19,26 @@ const Header = () => {
       <li>
         <NavLink to="/allCrops">All Crops</NavLink>
       </li>
-      <li>
-        <NavLink to="/addCrops">Add Crops</NavLink>
-      </li>
-      <li>
-        <NavLink to="/myInterest">My Interest</NavLink>
-      </li>
-      <li>
-        <NavLink to="/myPost">My post</NavLink>
-      </li>
-      <li>
-        <NavLink to="/profile">Profile</NavLink>
-      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to="/addCrops">Add Crops</NavLink>
+          </li>
+          <li>
+            <NavLink to="/myInterest">My Interest</NavLink>
+          </li>
+          <li>
+            <NavLink to="/myPost">My Post</NavLink>
+          </li>
+          <li>
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
+
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -83,7 +89,7 @@ const Header = () => {
                 Logout
               </button>
             ) : (
-              <Link to="/login" className="btn btn-primary px-8">
+              <Link to="/login" className="btn btn-sm btn-primary px-4 md:px-8">
                 Login
               </Link>
             )}

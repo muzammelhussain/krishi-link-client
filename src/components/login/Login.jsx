@@ -24,8 +24,7 @@ const Login = () => {
     userLogin(email, password)
       .then(() => {
         toast.success("Login successful!");
-        //navigate(`${location.state ? location.state : "/"}`);
-        navigate("/");
+        navigate(`${location.state ? location.state : "/"}`);
       })
       .catch((error) => {
         toast.error(error.message);
@@ -54,8 +53,7 @@ const Login = () => {
             setUser(currentUser);
             console.log(currentUser);
             toast.success("Signed in with Google!");
-            //navigate(`${location.state ? location.state : "/"}`);
-            navigate("/");
+            navigate(`${location.state ? location.state : "/"}`);
           });
       })
       .catch((error) => {

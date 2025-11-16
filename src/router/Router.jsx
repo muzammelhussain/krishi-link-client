@@ -12,6 +12,7 @@ import Registration from "../components/registration/Registration";
 
 import Test from "../pages/Test";
 import ResetPass from "../resetPassword/resetPass";
+import PrivateRouter from "./PrivateRouter";
 
 const Router = createBrowserRouter([
   {
@@ -29,19 +30,35 @@ const Router = createBrowserRouter([
       },
       {
         path: "/addCrops",
-        element: <AddCrops></AddCrops>,
+        element: (
+          <PrivateRouter>
+            <AddCrops></AddCrops>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/myInterest",
-        element: <MyInterest></MyInterest>,
+        element: (
+          <PrivateRouter>
+            <MyInterest></MyInterest>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/myPost",
-        element: <MyPost></MyPost>,
+        element: (
+          <PrivateRouter>
+            <MyPost></MyPost>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile></Profile>,
+        element: (
+          <PrivateRouter>
+            <Profile></Profile>
+          </PrivateRouter>
+        ),
       },
     ],
   },
