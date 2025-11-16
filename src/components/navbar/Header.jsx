@@ -1,15 +1,15 @@
 import React, { use } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
 const Header = () => {
   const { user, userLogout } = use(AuthContext);
   console.log(user);
-  // const handleLogout = () => {
-  //   userLogout();
-  //   toast.success("Logout successful!");
-  // };
+  const handleLogout = () => {
+    userLogout();
+    toast.success("Logout successful!");
+  };
 
   const links = (
     <>
@@ -64,19 +64,30 @@ const Header = () => {
           </div>
           <span>
             <img src="../../assets/logo-farmer.jpg" alt="" />
-            <a className="btn btn-ghost text-xl">krishi Link</a>
+            <a className="btn btn-ghost text-xl">Krishi Link</a>
           </span>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-primary mr-2">
+          <button className="btn btn-sm btn-primary px-4 md:px-8 mr-2">
             <NavLink to="/register">Register</NavLink>
           </button>
-          <NavLink to="/login">
-            <a className="btn">Login</a>
-          </NavLink>
+          <div>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="btn btn-sm btn-primary px-4 md:px-8"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/login" className="btn btn-primary px-8">
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
