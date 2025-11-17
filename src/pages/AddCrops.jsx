@@ -1,6 +1,7 @@
-import React, { use, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { use } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const AddCrops = () => {
   const { user } = use(AuthContext);
@@ -39,8 +40,14 @@ const AddCrops = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("Crop added successfully!");
-        navigate("/myPost");
+        Swal.fire({
+          title: "Success!",
+          text: "Crop added successfully!",
+          icon: "success",
+          confirmButtonText: "Go to My Posts",
+        }).then(() => {
+          navigate("/myPost");
+        });
       })
       .catch((err) => console.log(err));
   };
