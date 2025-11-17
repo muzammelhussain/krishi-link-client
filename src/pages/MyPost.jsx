@@ -13,7 +13,6 @@ const MyPost = () => {
       .then((data) => setCrops(data));
   }, [user]);
 
-  // ========================== EDIT CROP ==========================
   const handleUpdate = (e) => {
     e.preventDefault();
 

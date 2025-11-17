@@ -1,6 +1,6 @@
 import React, { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { updateProfile } from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const Registration = () => {
   const [showPass, setShowPass] = useState(false);
   const { signInWithGoogle, user, setUser, createUser } = use(AuthContext);
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -63,8 +64,7 @@ const Registration = () => {
             .then((data) => {
               console.log("User saved to DB:", data);
               toast.success("Registration successful!");
-
-              //Set user in your Auth Context (optional but recommended)
+              navigate("/");
               setUser({
                 ...createdUser,
                 displayName: name,
