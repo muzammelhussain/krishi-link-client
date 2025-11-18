@@ -16,7 +16,7 @@ const Profile = () => {
   console.log(profile);
 
   // Update profile
-  const handleUpdate = (e) => {
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -28,20 +28,35 @@ const Profile = () => {
       image: form.image.value,
     };
 
-    fetch(`http://localhost:3000/users/${user.email}`, {
-      method: "PUT",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        Swal.fire("Updated!", "Profile updated successfully!", "success");
-
-        // update UI immediately
-        setProfile((prevProfile) => ({ ...prevProfile, ...updatedUser }));
-
-        setEditProfile(null);
+    try {
+      const res = await fetch(`http://localhost:3000/users/${user.email}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUser),
       });
+
+      // If server returns error (404, 500, etc.)
+      if (!res.ok) {
+        const errorData = await res.json();
+        Swal.fire("Error", errorData.error || "Update failed", "error");
+        return;
+      }
+
+      const data = await res.json();
+
+      Swal.fire("Updated!", "Profile updated successfully!", "success");
+
+      // Update UI instantly
+      setProfile((old) => ({
+        ...old,
+        ...updatedUser,
+      }));
+
+      setEditProfile(null);
+    } catch (error) {
+      Swal.fire("Error", "Something went wrong!", "error");
+      console.error(error);
+    }
   };
 
   if (!profile) return <p>Loading...</p>;
@@ -85,7 +100,7 @@ const Profile = () => {
           <div className="modal-box">
             <h3 className="font-bold text-lg">Edit Profile</h3>
 
-            <form onSubmit={handleUpdate} className="space-y-3 mt-4">
+            <form onSubmit={handleUpdateProfile} className="space-y-3 mt-4">
               <input
                 name="name"
                 defaultValue={profile.name}
