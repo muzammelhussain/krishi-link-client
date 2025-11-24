@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const CropCard = ({ crop }) => {
   return (
     <div className="card bg-base-100 shadow-xl">
@@ -18,7 +20,9 @@ const CropCard = ({ crop }) => {
         <p>Location: {crop.location}</p>
 
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">View Details</button>
+          <button className="btn btn-primary">
+            <Link to={`/allCrops/${crop._id}`}>View Details</Link>
+          </button>
         </div>
       </div>
     </div>

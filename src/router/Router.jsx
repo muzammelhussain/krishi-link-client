@@ -13,6 +13,7 @@ import Registration from "../components/registration/Registration";
 import Test from "../pages/Test";
 import ResetPass from "../resetPassword/resetPass";
 import PrivateRouter from "./PrivateRouter";
+import CropDetails from "../components/cropDetail/CropDetails";
 
 const Router = createBrowserRouter([
   {
@@ -57,6 +58,15 @@ const Router = createBrowserRouter([
         element: (
           <PrivateRouter>
             <Profile></Profile>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "/allCrops/:id",
+        element: (
+          <PrivateRouter>
+            {" "}
+            <CropDetails></CropDetails>
           </PrivateRouter>
         ),
       },

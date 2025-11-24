@@ -2,7 +2,7 @@ import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
-
+import logo from "../../assets/logo-farmer.jpg";
 const Header = () => {
   const { user, userLogout } = use(AuthContext);
   console.log(user);
@@ -68,10 +68,12 @@ const Header = () => {
               {links}
             </ul>
           </div>
-          <span>
-            <img src="../../assets/logo-farmer.jpg" alt="" />
-            <a className="btn btn-ghost text-xl">Krishi Link</a>
-          </span>
+          <Link to="/home">
+            <span className="flex justify-center items-center">
+              <img className="h-10 w-10" src={logo} alt="" />
+              <p>Krishi Link</p>
+            </span>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
