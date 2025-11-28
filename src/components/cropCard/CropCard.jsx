@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 const CropCard = ({ crop }) => {
+  console.log("crop imgage url", crop.image);
   return (
     <div className="card bg-base-100 shadow-xl">
       <figure>

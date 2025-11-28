@@ -4,17 +4,24 @@ import CropCard from "../components/cropCard/CropCard";
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadCrops = async () => {
-      const res = await fetch(
-        `http://localhost:3000/products?search=${search}`
-      );
-      const data = await res.json();
-
-      console.log("Crops API response:", data);
-
-      setCrops(data);
+      setLoading(true); // start loading
+      try {
+        const res = await fetch(
+          `http://localhost:3000/products?search=${search}`
+        );
+        const data = await res.json();
+        console.log("Crops API response:", data);
+        setCrops(data);
+      } catch (err) {
+        console.error("Error fetching crops:", err);
+        setCrops([]);
+      } finally {
+        setLoading(false); // stop loading
+      }
     };
 
     loadCrops();
@@ -33,12 +40,18 @@ const AllCrops = () => {
         />
       </div>
 
-      {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.isArray(crops) && crops.length > 0 ? (
+        {loading ? (
+          <div className="col-span-full text-center py-10">
+            <span className="loading loading-spinner text-primary text-4xl"></span>
+            <p className="mt-2 text-gray-500">Loading crops...</p>
+          </div>
+        ) : Array.isArray(crops) && crops.length > 0 ? (
           crops.map((crop) => <CropCard key={crop._id} crop={crop} />)
         ) : (
-          <p>No crops found.</p>
+          <p className="col-span-full text-center text-gray-500">
+            No crops found.
+          </p>
         )}
       </div>
     </div>

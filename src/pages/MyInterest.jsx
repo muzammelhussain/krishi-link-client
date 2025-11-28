@@ -14,9 +14,7 @@ const MyInterest = () => {
       .then((data) => setInterests(data));
   }, [user]);
 
-  // ------------------------------
   // SORTING FUNCTION
-  // ------------------------------
   const sortedInterests = [...interests].sort((a, b) => {
     if (sortType === "name") {
       return a.cropName.localeCompare(b.cropName);
