@@ -1,11 +1,12 @@
-import React, { useEffect, useState, use } from "react";
-import { useParams } from "react-router";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate, useParams } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 
 const CropDetails = () => {
   const { id } = useParams(); // cropId
-  const { user } = use(AuthContext);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [crop, setCrop] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -19,7 +20,7 @@ const CropDetails = () => {
       const data = await res.json();
       setCrop(data);
 
-      // Check if user already interested
+      // Check already interested
       if (data?.interests?.some((i) => i.userEmail === user.email)) {
         setAlreadyInterested(true);
       }
@@ -32,7 +33,7 @@ const CropDetails = () => {
   const isOwner = crop.owner?.ownerEmail === user.email;
   const totalPrice = quantity * crop.pricePerUnit;
 
-  // Submit interest
+  // Submit Interest
   const handleInterest = async (e) => {
     e.preventDefault();
 
@@ -50,7 +51,7 @@ const CropDetails = () => {
 
     const confirm = await Swal.fire({
       title: "Send Interest?",
-      text: `Total Price: ${totalPrice}`,
+      text: `Total Price: ${totalPrice} BDT`,
       showCancelButton: true,
       confirmButtonText: "Yes, Send",
     });
@@ -68,6 +69,36 @@ const CropDetails = () => {
     if (data.inserted) {
       Swal.fire("Success!", "Interest sent successfully!", "success");
       setAlreadyInterested(true);
+    }
+    navigate("/myInterest");
+  };
+
+  // -------------------------
+  // OWNER: ACCEPT OR REJECT INTEREST
+  // -------------------------
+  const handleStatusChange = async (interestId, newStatus) => {
+    console.log("button is clicked");
+    const res = await fetch(
+      `http://localhost:3000/interests/status/${interestId}`,
+      {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.modified) {
+      Swal.fire("Updated!", "Interest status updated.", "success");
+
+      // Update UI
+      setCrop((prev) => ({
+        ...prev,
+        interests: prev.interests.map((i) =>
+          i._id === interestId ? { ...i, status: newStatus } : i
+        ),
+      }));
     }
   };
 
@@ -97,7 +128,7 @@ const CropDetails = () => {
         </div>
       </div>
 
-      {/* INTEREST FORM (only for non-owner users) */}
+      {/* INTEREST FORM (BUYER ONLY) */}
       {!isOwner && (
         <div className="mt-8 p-6 bg-white shadow-lg rounded-lg">
           <h2 className="text-xl font-bold mb-3">Send Interest</h2>
@@ -133,6 +164,76 @@ const CropDetails = () => {
                 Submit Interest
               </button>
             </form>
+          )}
+        </div>
+      )}
+      {/* RECEIVED INTERESTS (OWNER) */}
+
+      {isOwner && (
+        <div className="mt-10 bg-white p-6 shadow-xl rounded-lg">
+          <h2 className="text-2xl font-bold mb-4">Received Interests</h2>
+
+          {crop.interests?.length === 0 ? (
+            <p className="text-gray-500">No interests received yet.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="table w-full">
+                <thead>
+                  <tr>
+                    <th>Buyer</th>
+                    <th>Quantity</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {crop.interests.map((interest) => (
+                    <tr key={interest._id}>
+                      <td>{interest.userName}</td>
+                      <td>{interest.quantity}</td>
+                      <td>{interest.message}</td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            interest.status === "pending"
+                              ? "badge-warning"
+                              : interest.status === "accepted"
+                              ? "badge-success"
+                              : "badge-error"
+                          }`}
+                        >
+                          {interest.status}
+                        </span>
+                      </td>
+
+                      <td className="space-x-2">
+                        <button
+                          className="btn btn-success btn-sm"
+                          disabled={interest.status !== "pending"}
+                          onClick={() =>
+                            handleStatusChange(interest._id, "accepted")
+                          }
+                        >
+                          Accept
+                        </button>
+
+                        <button
+                          className="btn btn-error btn-sm"
+                          disabled={interest.status !== "pending"}
+                          onClick={() =>
+                            handleStatusChange(interest._id, "rejected")
+                          }
+                        >
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       )}
