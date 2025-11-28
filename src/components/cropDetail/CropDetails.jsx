@@ -189,7 +189,7 @@ const CropDetails = () => {
                 </thead>
 
                 <tbody>
-                  {crop.interests.map((interest) => (
+                  {crop.interests?.map((interest) => (
                     <tr key={interest._id}>
                       <td>{interest.userName}</td>
                       <td>{interest.quantity}</td>
