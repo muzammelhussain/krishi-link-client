@@ -78,24 +78,27 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
-        <div className="navbar-end">
-          <button className="btn btn-sm btn-primary px-4 md:px-8 mr-2">
-            <NavLink to="/register">Register</NavLink>
-          </button>
-          <div>
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className="btn btn-sm btn-primary px-4 md:px-8"
-              >
-                Logout
+        <div className="navbar-end flex items-center gap-2">
+          {!user && (
+            <>
+              <button className="btn btn-sm btn-primary px-4 md:px-8">
+                <NavLink to="/register">Register</NavLink>
               </button>
-            ) : (
+
               <Link to="/login" className="btn btn-sm btn-primary px-4 md:px-8">
                 Login
               </Link>
-            )}
-          </div>
+            </>
+          )}
+
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="btn btn-sm btn-primary px-4 md:px-8"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </div>

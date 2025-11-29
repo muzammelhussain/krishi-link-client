@@ -39,7 +39,7 @@ const HeroSlider = () => {
   const goToSlide = (index) => setActiveSlide(index);
 
   return (
-    <section className="relative w-full h-[700px] overflow-hidden">
+    <section className="relative w-full h-[300px] md:h-[650px] overflow-hidden">
       {heroSlides.map((slide, index) => (
         <div
           key={index}
@@ -61,7 +61,7 @@ const HeroSlider = () => {
 
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-70"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-opacity-40 text-[#FFFFFF] p-2 rounded-full hover:bg-opacity-70"
       >
         &#10094;
       </button>
