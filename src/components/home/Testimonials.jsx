@@ -1,33 +1,62 @@
-import React, { useState } from "react";
+import React, { use } from "react";
+
+import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import TestimonialCard from "./TestimonialCard";
+import Test from "../../pages/Test";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
 
-const testimonialsData = [
-  {
-    text: "Hero App Hub helped me sell my crops faster than ever! I was able to connect with buyers in my area and manage orders easily. The platform is user-friendly and efficient, making crop sales simple and hassle-free.",
-    author: "Akash Lal",
-  },
-  {
-    text: "Finding fresh vegetables from local farmers is so easy now. I can browse a variety of crops, compare prices, and order directly online. It has truly changed the way I shop for groceries.",
-    author: "Dilip Lowre",
-  },
-  {
-    text: "Great platform for connecting farmers and buyers. It provides transparency, easy communication, and timely updates on market trends. Highly recommended for anyone in the agriculture business.",
-    author: "Roton Pandy",
-  },
-];
-
-const Testimonials = () => (
-  <section className="py-12 bg-gradient-to-r from-green-100 via-green-50 to-yellow-50">
-    <div className="max-w-6xl mx-auto text-center">
-      <h2 className="text-3xl font-bold mb-12 animate-fadeIn">Reviews</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {testimonialsData.map((item, index) => (
-          <TestimonialCard key={index} testimonial={item} index={index} />
-        ))}
+const Testimonials = ({ reviewsPromise }) => {
+  const reviews = use(reviewsPromise);
+  console.log(reviews);
+  return (
+    <div className="my-24">
+      <div className="text-center mb-24  w-full md:w-2/3 mx-auto ">
+        <h1 className="text-3xl text-center font-bold my-8 text-green-300">
+          Review
+        </h1>
+        <p className="">
+          **Our customers are at the heart of everything we do, and their
+          feedback helps us grow and improve. you can read real reviews from
+          people who have experienced our service firsthand. Their honest
+          opinions, experiences, and satisfaction reflect our commitment to
+          quality and reliability. We value every review, as it inspires us to
+          continue delivering the best possible service to all our users.**
+        </p>
       </div>
+
+      <Swiper
+        loop={true}
+        effect={"coverflow"}
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView={3}
+        coverflowEffect={{
+          rotate: 30,
+          stretch: "50%",
+          depth: 200,
+          modifier: 1,
+          scale: 0.75,
+          slideShadows: true,
+        }}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
+        }}
+        pagination={true}
+        modules={[EffectCoverflow, Pagination, Autoplay]}
+        className="mySwiper w-full md:w-2/3 mx-auto"
+      >
+        {reviews.map((review) => (
+          <SwiperSlide key={review.id}>
+            <TestimonialCard review={review}></TestimonialCard>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
-  </section>
-);
+  );
+};
 
 export default Testimonials;

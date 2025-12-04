@@ -3,7 +3,7 @@ import { SiX } from "react-icons/si"; // X icon
 
 const Footer = () => {
   return (
-    <footer className="bg-indigo-50 text-gray-800">
+    <footer className="bg-indigo-50 text-gray-800 mt-60">
       <div className="footer flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 p-8 max-w-7xl mx-auto">
         <div>
           <h6 className="footer-title font-semibold mb-3">Services</h6>

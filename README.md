@@ -1,7 +1,7 @@
 # React + Vite
 
 🌾 KrishiLink – Smart Crop Trading Platform
-🔗 Live Site: https://your-client-live-url.com
+🔗 Live Site: https://krishi-link-cdde4.firebaseapp.com/
 
 (replace with your actual deployed client URL)
 

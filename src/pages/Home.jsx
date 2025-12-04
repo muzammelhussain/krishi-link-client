@@ -7,7 +7,7 @@ import AgroNews from "../components/home/AgroNews";
 import FeaturedServices from "../components/home/FeaturedServices";
 import Testimonials from "../components/home/Testimonials";
 
-const reviewsPromise = fetch("/public/review.json").then((res) => res.json());
+const reviewsPromise = fetch("/review.json").then((res) => res.json());
 const Home = () => {
   return (
     <div>

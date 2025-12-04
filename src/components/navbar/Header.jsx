@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import logo from "../../assets/logo-farmer.jpg";
 const Header = () => {
   const { user, userLogout } = use(AuthContext);
-  console.log(user);
+  //console.log(user);
   const handleLogout = () => {
     userLogout();
     toast.success("Logout successful!");
