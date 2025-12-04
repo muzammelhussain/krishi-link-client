@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import TestimonialCard from "./TestimonialCard";
 
 const testimonialsData = [
   {
@@ -15,37 +16,10 @@ const testimonialsData = [
   },
 ];
 
-const TestimonialCard = ({ testimonial, index }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div
-      className="p-6 bg-white rounded-lg shadow cursor-pointer 
-        transform transition duration-300 hover:scale-105 animate-slideUp"
-      style={{ animationDelay: `${index * 0.15}s` }}
-    >
-      <p className="text-gray-700">
-        {expanded ? testimonial.text : testimonial.text.slice(0, 100) + "..."}
-      </p>
-      <p className="mt-2 font-semibold text-green-700">
-        — {testimonial.author}
-      </p>
-      {testimonial.text.length > 100 && (
-        <button
-          className="mt-2 text-sm text-green-800 font-medium hover:underline"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? "Show Less" : "Read More"}
-        </button>
-      )}
-    </div>
-  );
-};
-
 const Testimonials = () => (
   <section className="py-12 bg-gradient-to-r from-green-100 via-green-50 to-yellow-50">
     <div className="max-w-6xl mx-auto text-center">
-      <h2 className="text-3xl font-bold mb-12 animate-fadeIn">Testimonials</h2>
+      <h2 className="text-3xl font-bold mb-12 animate-fadeIn">Reviews</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {testimonialsData.map((item, index) => (

@@ -11,7 +11,7 @@ const AllCrops = () => {
       setLoading(true); // start loading
       try {
         const res = await fetch(
-          `http://localhost:3000/products?search=${search}`
+          `https://krishi-link-api-server.vercel.app/products?search=${search}`
         );
         const data = await res.json();
         console.log("Crops API response:", data);

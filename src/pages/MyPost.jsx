@@ -8,7 +8,9 @@ const MyPost = () => {
   const [editCrop, setEditCrop] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products/byOwner/${user.email}`)
+    fetch(
+      `https://krishi-link-api-server.vercel.app/products/byOwner/${user.email}`
+    )
       .then((res) => res.json())
       .then((data) => setCrops(data));
   }, [user]);
@@ -29,11 +31,14 @@ const MyPost = () => {
       image: form.image.value,
     };
 
-    fetch(`http://localhost:3000/products/${editCrop._id}`, {
-      method: "PUT",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(updatedCrop),
-    })
+    fetch(
+      `https://krishi-link-api-server.vercel.app/products/${editCrop._id}`,
+      {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(updatedCrop),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         Swal.fire("Updated!", "Crop updated successfully!", "success");
@@ -59,7 +64,7 @@ const MyPost = () => {
       confirmButtonText: "Yes, delete",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/products/${id}`, {
+        fetch(`https://krishi-link-api-server.vercel.app/products/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

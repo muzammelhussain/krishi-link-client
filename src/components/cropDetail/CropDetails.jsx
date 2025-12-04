@@ -16,7 +16,14 @@ const CropDetails = () => {
   // Load crop
   useEffect(() => {
     const loadCrop = async () => {
-      const res = await fetch(`http://localhost:3000/products/${id}`);
+      const res = await fetch(
+        `https://krishi-link-api-server.vercel.app/products/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
       const data = await res.json();
       setCrop(data);
 
@@ -58,11 +65,14 @@ const CropDetails = () => {
 
     if (!confirm.isConfirmed) return;
 
-    const res = await fetch("http://localhost:3000/interests", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(interestData),
-    });
+    const res = await fetch(
+      "https://krishi-link-api-server.vercel.app/interests",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(interestData),
+      }
+    );
 
     const data = await res.json();
 
@@ -73,13 +83,12 @@ const CropDetails = () => {
     navigate("/myInterest");
   };
 
-  // -------------------------
   // OWNER: ACCEPT OR REJECT INTEREST
-  // -------------------------
+
   const handleStatusChange = async (interestId, newStatus) => {
     console.log("button is clicked");
     const res = await fetch(
-      `http://localhost:3000/interests/status/${interestId}`,
+      `https://krishi-link-api-server.vercel.app/interests/status/${interestId}`,
       {
         method: "PATCH",
         headers: { "content-type": "application/json" },
@@ -105,26 +114,71 @@ const CropDetails = () => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* CROP INFO */}
-      <div className="card bg-white p-6 shadow-xl">
-        <img src={crop.image} className="w-full rounded-lg mb-5" alt="" />
+      <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        {/* Image */}
+        <div className="relative">
+          <img
+            src={crop.image}
+            alt={crop.name}
+            className="w-full h-64 object-cover"
+          />
+          <span className="absolute bottom-3 right-3 bg-green-600 text-white px-4 py-1 rounded-full text-sm shadow-lg">
+            {crop.type}
+          </span>
+        </div>
 
-        <h1 className="text-3xl font-bold">{crop.name}</h1>
-        <p className="text-lg text-gray-600">{crop.type}</p>
-        <p className="mt-3">{crop.description}</p>
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          {/* Title */}
+          <h1 className="text-4xl font-bold text-gray-800">{crop.name}</h1>
 
-        <div className="mt-5 space-y-1">
-          <p>
-            <strong>Price per unit:</strong> {crop.pricePerUnit} / {crop.unit}
-          </p>
-          <p>
-            <strong>Available Quantity:</strong> {crop.quantity}
-          </p>
-          <p>
-            <strong>Location:</strong> {crop.location}
-          </p>
-          <p>
-            <strong>Owner:</strong> {crop.owner.ownerName}
-          </p>
+          {/* Description */}
+          <p className="text-gray-600 leading-relaxed">{crop.description}</p>
+
+          <div className="divider"></div>
+
+          {/* Info Grid */}
+          <div className="grid grid-cols-2 gap-4 text-gray-700">
+            <p className="font-semibold">
+              Price:
+              <span className="block font-normal">
+                {crop.pricePerUnit} / {crop.unit}
+              </span>
+            </p>
+
+            <p className="font-semibold">
+              Quantity:
+              <span className="block font-normal">{crop.quantity}</span>
+            </p>
+
+            <p className="font-semibold">
+              Location:
+              <span className="block font-normal">{crop.location}</span>
+            </p>
+
+            <p className="font-semibold">
+              Owner:
+              <span className="block font-normal">{crop.owner.ownerName}</span>
+            </p>
+          </div>
+
+          <div className="divider"></div>
+
+          {/* Owner Section */}
+          <div className="flex items-center gap-3">
+            <img
+              src={
+                crop.owner.ownerImage ||
+                "https://i.ibb.co.com/m5WJ86XJ/user.png"
+              }
+              className="w-12 h-12 rounded-full border"
+            />
+
+            <div>
+              <h3 className="text-lg font-semibold">{crop.owner.ownerName}</h3>
+              <p className="text-sm text-gray-500">{crop.owner.ownerEmail}</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -144,6 +198,7 @@ const CropDetails = () => {
                 className="input input-bordered w-full"
                 placeholder="Quantity"
                 value={quantity}
+                min="1"
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 required
               />

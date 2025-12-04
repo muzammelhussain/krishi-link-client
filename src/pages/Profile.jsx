@@ -9,7 +9,7 @@ const Profile = () => {
 
   // Load profile from DB
   useEffect(() => {
-    fetch(`http://localhost:3000/users/${user.email}`)
+    fetch(`https://krishi-link-api-server.vercel.app/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setProfile(data));
   }, [user]);
@@ -29,11 +29,14 @@ const Profile = () => {
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/users/${user.email}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedUser),
-      });
+      const res = await fetch(
+        `https://krishi-link-api-server.vercel.app/users/${user.email}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUser),
+        }
+      );
 
       // If server returns error (404, 500, etc.)
       if (!res.ok) {

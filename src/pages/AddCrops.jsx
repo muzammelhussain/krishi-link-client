@@ -21,6 +21,7 @@ const AddCrops = () => {
       description: form.description.value,
       location: form.location.value,
       image: form.image.value,
+      createdAt: new Date(),
 
       // Auto assign logged-in user info
       owner: {
@@ -31,7 +32,7 @@ const AddCrops = () => {
       },
     };
 
-    fetch("http://localhost:3000/products", {
+    fetch("https://krishi-link-api-server.vercel.app/products", {
       method: "POST",
       headers: {
         "content-type": "application/json",

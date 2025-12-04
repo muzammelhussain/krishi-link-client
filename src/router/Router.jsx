@@ -14,6 +14,7 @@ import Test from "../pages/Test";
 import ResetPass from "../resetPassword/resetPass";
 import PrivateRouter from "./PrivateRouter";
 import CropDetails from "../components/cropDetail/CropDetails";
+import ErrorPage from "../pages/ErrorPage";
 
 const Router = createBrowserRouter([
   {
@@ -22,7 +23,10 @@ const Router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/",
+        Component: Home,
+      },
+      {
+        path: "/home",
         Component: Home,
       },
       {
@@ -83,6 +87,10 @@ const Router = createBrowserRouter([
   {
     path: "/forget-password",
     Component: ResetPass,
+  },
+  {
+    path: "/*",
+    Component: ErrorPage,
   },
 ]);
 export default Router;

@@ -1,16 +1,65 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🌾 KrishiLink – Smart Crop Trading Platform
+🔗 Live Site: https://your-client-live-url.com
 
-Currently, two official plugins are available:
+(replace with your actual deployed client URL)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+KrishiLink is a modern MERN-based crop trading platform where farmers can post crops, buyers can send interest requests, and owners can manage those interests with real-time updates. The platform focuses on simplicity, transparency, and secure interaction between crop owners and buyers.
 
-## React Compiler
+🚀 Features
+✔ 1. User Authentication (Login & Register)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Secure login/register system for farmers and buyers with JWT-based authentication.
 
-## Expanding the ESLint configuration
+✔ 2. Crop Posting & Management
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Crop owners can add new crops, view their own listings, and manage them easily.
+
+✔ 3. Interested Buyer System
+
+Users can send interest requests on any crop except their own.
+Owners can Accept / Reject interests with one click.
+
+✔ 4. Automatic Quantity Update
+
+When the owner accepts an interest request, the crop quantity decreases automatically.
+
+✔ 5. Sorting, Filtering & Search
+
+The interests page includes sorting methods such as:
+
+Sort by Price High → Low
+
+Sort by Price Low → High
+
+Sort by Newest
+
+Sort by Oldest
+
+Sort by Accepted / Pending / Rejected
+
+✔ 6. Fully Responsive UI
+
+Optimized for mobile, tablet, and large screens with Tailwind & DaisyUI.
+
+🛠️ Technologies Used
+Frontend
+
+React.js
+
+React Router
+
+Tailwind CSS & DaisyUI
+
+SweetAlert2
+
+Backend
+
+Node.js
+
+Express.js
+
+MongoDB
+
+JWT Authentication

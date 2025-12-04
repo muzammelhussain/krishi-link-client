@@ -9,7 +9,9 @@ const LatestCrops = () => {
   useEffect(() => {
     const fetchCrops = async () => {
       try {
-        const res = await fetch("http://localhost:3000/products/latest");
+        const res = await fetch(
+          "https://krishi-link-api-server.vercel.app/products/latest"
+        );
         const data = await res.json();
         setCrops(data);
       } catch (err) {

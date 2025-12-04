@@ -94,7 +94,7 @@ const Header = () => {
           {user && (
             <button
               onClick={handleLogout}
-              className="btn btn-sm btn-primary px-4 md:px-8"
+              className="btn btn-sm btn-soft px-4 md:px-8"
             >
               Logout
             </button>

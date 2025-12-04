@@ -53,7 +53,7 @@ const Registration = () => {
           };
 
           // Save user to MongoDB
-          fetch("http://localhost:3000/users", {
+          fetch("https://krishi-link-api-server.vercel.app/users", {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -88,7 +88,7 @@ const Registration = () => {
           email: res.user.email,
           image: res.user.photoURL,
         };
-        fetch("http://localhost:3000/users", {
+        fetch("https://krishi-link-api-server.vercel.app/users", {
           method: "POST",
           headers: {
             "content-type": "application/json",
