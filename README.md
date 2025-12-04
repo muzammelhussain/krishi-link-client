@@ -60,6 +60,8 @@ Node.js
 
 Express.js
 
+Swiper
+
 MongoDB
 
 JWT Authentication

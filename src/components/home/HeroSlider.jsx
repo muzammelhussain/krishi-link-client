@@ -39,7 +39,7 @@ const HeroSlider = () => {
   const goToSlide = (index) => setActiveSlide(index);
 
   return (
-    <section className="relative w-full h-[300px] md:h-[650px] overflow-hidden">
+    <section className="relative w-full h-[300px] md:h-[650px] overflow-hidden -z-50">
       {heroSlides.map((slide, index) => (
         <div
           key={index}
