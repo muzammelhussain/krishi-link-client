@@ -33,6 +33,7 @@ const Home = () => {
       {/* <FeaturedServices></FeaturedServices> */}
       <Testimonials reviewsPromise={reviewsPromise}></Testimonials>
       <FAQSection></FAQSection>
+      
     </div>
   );
 };

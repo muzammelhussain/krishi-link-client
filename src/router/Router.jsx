@@ -23,6 +23,10 @@ import TermsAndConditions from "../pages/TermsAndConditions";
 import SendInterest from "../components/cropDetail/SendInterest";
 import ReceivedInterests from "../components/cropDetail/ReceivedInterests";
 import DashboardLayout from "../root/DashboardLayout";
+import Projects from "../components/footer/Projects";
+import Careers from "../components/footer/Careers";
+import FAQ from "../components/footer/FAQ";
+import Dashboard from "../root/Dashboard";
 
 const Router = createBrowserRouter([
   {
@@ -61,6 +65,18 @@ const Router = createBrowserRouter([
       {
         path: "/privacy-policy",
         Component: TermsAndConditions,
+      },
+      {
+        path: "/faq",
+        Component: FAQ,
+      },
+      {
+        path: "/careers",
+        Component:Careers,
+      },
+      {
+        path: "/projects",
+        Component: Projects,
       },
 
       {
@@ -115,6 +131,10 @@ const Router = createBrowserRouter([
         path: "profile",
         Component: Profile,
       },
+      {
+        path: "overView",
+        Component: Dashboard
+      }
     ],
   },
   {

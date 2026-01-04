@@ -36,7 +36,7 @@ const FAQSection = () => {
   return (
     <section className="my-32 px-4 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="text-center mb-16">
+      <div className="text-center  mb-16">
         <h2 className="text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
           Frequently Asked Questions
         </h2>
@@ -76,7 +76,7 @@ const FAQSection = () => {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="px-5 pb-5 text-gray-700 leading-relaxed"
+                  className="px-5 pb-5 text-base-content leading-relaxed"
                 >
                   {faq.answer}
                 </motion.div>

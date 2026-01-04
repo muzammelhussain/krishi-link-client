@@ -1,214 +1,225 @@
-import React, { use, useState } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router"; 
 import { updateProfile } from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
+import SocialAuthSection from "../registration/SocialAuthSection";
+import { FaUser, FaEnvelope, FaLock, FaImage } from "react-icons/fa"; 
 
 const Registration = () => {
   const [showPass, setShowPass] = useState(false);
-  const { signInWithGoogle, user, setUser, createUser } = use(AuthContext);
+  const { 
+    signInWithGoogle, 
+    signInWithGithub, 
+    signInWithFacebook, 
+    setUser, 
+    createUser, 
+    loading, 
+    setLoading 
+  } = useContext(AuthContext); 
   const navigate = useNavigate();
 
+  
+  const saveUserToDB = (res) => {
+    const currentUser = res.user;
+    const newUser = {
+      name: currentUser.displayName,
+      email: currentUser.email,
+      image: currentUser.photoURL,
+    };
+
+    fetch("https://krishi-link-api-server.vercel.app/users", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newUser),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setUser(currentUser);
+        toast.success(`Signed in with ${currentUser.providerData[0].providerId.split('.')[0]}!`);
+        navigate("/");
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error("Error saving user to database.");
+        console.error(error);
+        setLoading(false);
+      });
+  };
+
+  // --- Social Login Handlers ---
+  const handleGoogleSignUp = () => {
+    setLoading(true);
+    signInWithGoogle()
+      .then(saveUserToDB)
+      .catch((error) => {
+        toast.error(error.message);
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleGithubLogin = () => { // <-- New Handler
+    setLoading(true);
+    signInWithGithub()
+      .then(saveUserToDB)
+      .catch((error) => {
+        toast.error(error.message);
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleFacebookLogin = () => { // <-- New Handler
+    setLoading(true);
+    signInWithFacebook()
+      .then(saveUserToDB)
+      .catch((error) => {
+        toast.error(error.message);
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+
+  // --- Email/Password Registration Handler (Existing logic refined) ---
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
-
     const name = form.name.value.trim();
     const photo = form.photo.value.trim();
     const email = form.email.value.trim();
     const pass = form.password.value;
 
-    if (!name || !photo || !email || !pass) {
-      toast.error("Please fill in all fields!");
+    if (pass.length < 6 || !/[A-Z]/.test(pass) || !/[a-z]/.test(pass)) {
+      toast.error("Password must be at least 6 characters, including uppercase and lowercase letters!");
       return;
     }
-    if (pass.length < 6) {
-      toast.error("Password must be at least 6 characters long!");
-      return;
-    }
-    if (!/[A-Z]/.test(pass)) {
-      toast.error("Password must contain at least one uppercase letter!");
-      return;
-    }
-    if (!/[a-z]/.test(pass)) {
-      toast.error("Password must contain at least one lowercase letter!");
-      return;
-    }
+
+    setLoading(true);
 
     createUser(email, pass)
       .then((res) => {
         const createdUser = res.user;
 
-        //  Update Firebase profile
         updateProfile(createdUser, {
           displayName: name,
           photoURL: photo,
         }).then(() => {
-          // Build the user object to save in database
-          const newUser = {
-            name: name,
-            email: email,
-            image: photo,
-          };
-
-          // Save user to MongoDB
-          fetch("https://krishi-link-api-server.vercel.app/users", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log("User saved to DB:", data);
-              toast.success("Registration successful!");
-              navigate("/");
-              setUser({
-                ...createdUser,
-                displayName: name,
-                photoURL: photo,
-              });
-            });
+          // Save user to MongoDB (reusing the saveUserToDB structure)
+          saveUserToDB({ 
+              user: { 
+                  ...createdUser, 
+                  displayName: name, 
+                  photoURL: photo, 
+                  providerData: [{ providerId: 'password' }] 
+              } 
+          });
         });
       })
       .catch((error) => {
         console.log("Registration error:", error);
         toast.error(error.message || "Registration failed!");
+        setLoading(false);
       });
   };
 
-  const handleGoogleSignUp = () => {
-    signInWithGoogle()
-      .then((res) => {
-        const currentUser = res.user;
-        const newUser = {
-          name: res.user.displayName,
-          email: res.user.email,
-          image: res.user.photoURL,
-        };
-        fetch("https://krishi-link-api-server.vercel.app/users", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("data after user save", data);
-            setUser(currentUser);
-            console.log(currentUser);
-            toast.success("Signed in with Google!");
-          });
-      })
-      .catch((error) => {
-        toast.error(error.message);
-        console.log(error);
-      });
-  };
   return (
-    <div>
-      <div className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold mb-6">Register Now!</h1>
-          </div>
-          <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
-            <div className="card-body">
-              <form onSubmit={handleRegister}>
-                <fieldset className="fieldset">
-                  <label className="label">Your Name</label>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 sm:p-6">
+      <div className="w-full max-w-lg">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold text-green-700 mb-2">
+            🌱 Join KrishiLink
+          </h1>
+          <p className="text-gray-600">Create your new account to connect with the farming community.</p>
+        </div>
+        
+        <div className="card bg-white w-full shadow-2xl rounded-xl border border-green-100 p-6 sm:p-8">
+          
+          {/* Email/Password Form */}
+          <form onSubmit={handleRegister} className="space-y-4">
+            
+            {/* Name */}
+            <label className="form-control w-full">
+                <span className="label-text flex items-center font-medium"><FaUser className="mr-2 text-green-500"/>Your Name</span>
+                <input
+                  name="name"
+                  type="text"
+                  className="input input-bordered w-full focus:border-green-500 transition"
+                  placeholder="Enter your name"
+                  required
+                />
+            </label>
+
+            {/* Photo URL */}
+            <label className="form-control w-full">
+                <span className="label-text flex items-center font-medium"><FaImage className="mr-2 text-green-500"/>Photo URL</span>
+                <input
+                  name="photo"
+                  type="url"
+                  className="input input-bordered w-full focus:border-green-500 transition"
+                  placeholder="Link to your profile photo"
+                  required
+                />
+            </label>
+
+            {/* Email */}
+            <label className="form-control w-full">
+                <span className="label-text flex items-center font-medium"><FaEnvelope className="mr-2 text-green-500"/>Email</span>
+                <input
+                  name="email"
+                  type="email"
+                  className="input input-bordered w-full focus:border-green-500 transition"
+                  placeholder="Email"
+                  required
+                />
+            </label>
+
+            {/* Password */}
+            <label className="form-control w-full">
+                <span className="label-text flex items-center font-medium"><FaLock className="mr-2 text-green-500"/>Password</span>
+                <div className="relative">
                   <input
-                    name="name"
-                    type="text"
-                    className="input"
-                    placeholder="Enter your name"
+                    name="password"
+                    type={showPass ? "text" : "password"}
+                    className="input input-bordered w-full pr-10 focus:border-green-500 transition"
+                    placeholder="Password"
+                    required
                   />
-
-                  <label className="label">Photo URL</label>
-                  <input
-                    name="photo"
-                    type="text"
-                    className="input"
-                    placeholder="Photo URL"
-                  />
-
-                  <label className="label">Email</label>
-                  <input
-                    name="email"
-                    type="email"
-                    className="input"
-                    placeholder="Email"
-                  />
-
-                  <label className="label">Password</label>
-                  <div className="relative">
-                    <input
-                      name="password"
-                      type={showPass ? "text" : "password"}
-                      className="input w-full pr-10"
-                      placeholder="Password"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-3 text-gray-500"
-                    >
-                      {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  </div>
-
-                  <button type="submit" className="btn btn-neutral mt-4">
-                    Register
+                  <button
+                    type="button"
+                    onClick={() => setShowPass(!showPass)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-green-600 transition"
+                  >
+                    {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
+                </div>
+                <span className="label-text-alt mt-1 text-gray-500">
+                    Min 6 characters, at least one uppercase and one lowercase letter.
+                </span>
+            </label>
 
-                  <p className="font-semibold text-center my-6">
-                    Already have an account?
-                    <Link to="/login" className="text-secondary">
-                      Login
-                    </Link>
-                  </p>
-                </fieldset>
-              </form>
-              {/* Google */}
-              <button
-                onClick={handleGoogleSignUp}
-                className="btn bg-white text-black border-[#e5e5e5]"
-              >
-                <svg
-                  aria-label="Google logo"
-                  width="16"
-                  height="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <g>
-                    <path d="m0 0H512V512H0" fill="#fff"></path>
-                    <path
-                      fill="#34a853"
-                      d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-                    ></path>
-                    <path
-                      fill="#4285f4"
-                      d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-                    ></path>
-                    <path
-                      fill="#fbbc02"
-                      d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-                    ></path>
-                    <path
-                      fill="#ea4335"
-                      d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-                    ></path>
-                  </g>
-                </svg>
-                Login with Google
-              </button>
-            </div>
-          </div>
+            <button type="submit" className="btn btn-success w-full mt-6 text-white text-lg font-bold shadow-lg hover:bg-green-700" disabled={loading}>
+              {loading ? "Registering..." : "Register"}
+            </button>
+
+            {/* Already have an account link */}
+            <p className="font-medium text-center pt-4 text-gray-700">
+              Already have an account?
+              <Link to="/login" className="text-green-600 font-bold hover:underline ml-1 transition">
+                Login
+              </Link>
+            </p>
+          </form>
+
+          {/* Social Login Section */}
+          <SocialAuthSection 
+            handleGoogleSignUp={handleGoogleSignUp} 
+            // handleGithubLogin={handleGithubLogin} 
+            // handleFacebookLogin={handleFacebookLogin} 
+          />
+          
         </div>
       </div>
     </div>
