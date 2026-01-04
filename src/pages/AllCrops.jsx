@@ -40,7 +40,7 @@ const AllCrops = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
           <div className="col-span-full text-center py-10">
             <span className="loading loading-spinner text-primary text-4xl"></span>

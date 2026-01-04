@@ -15,6 +15,14 @@ import ResetPass from "../resetPassword/resetPass";
 import PrivateRouter from "./PrivateRouter";
 import CropDetails from "../components/cropDetail/CropDetails";
 import ErrorPage from "../pages/ErrorPage";
+import ValueProposition from "../pages/ValueProposition";
+import BlogTopics from "../pages/BlogTopics";
+import ContactAndSupport from "../pages/ContactAndSupport";
+import HelpAndSupport from "../pages/HelpAndSupport";
+import TermsAndConditions from "../pages/TermsAndConditions";
+import SendInterest from "../components/cropDetail/SendInterest";
+import ReceivedInterests from "../components/cropDetail/ReceivedInterests";
+import DashboardLayout from "../root/DashboardLayout";
 
 const Router = createBrowserRouter([
   {
@@ -34,45 +42,78 @@ const Router = createBrowserRouter([
         Component: AllCrops,
       },
       {
-        path: "/addCrops",
-        element: (
-          <PrivateRouter>
-            <AddCrops></AddCrops>
-          </PrivateRouter>
-        ),
+        path: "/about-us",
+        Component: ValueProposition,
       },
       {
-        path: "/myInterest",
-        element: (
-          <PrivateRouter>
-            <MyInterest></MyInterest>
-          </PrivateRouter>
-        ),
+        path: "/blog",
+        Component: BlogTopics,
+      },
+
+      {
+        path: "/contact-us",
+        Component: ContactAndSupport,
       },
       {
-        path: "/myPost",
-        element: (
-          <PrivateRouter>
-            <MyPost></MyPost>
-          </PrivateRouter>
-        ),
+        path: "/support",
+        Component: HelpAndSupport,
       },
       {
-        path: "/profile",
-        element: (
-          <PrivateRouter>
-            <Profile></Profile>
-          </PrivateRouter>
-        ),
+        path: "/privacy-policy",
+        Component: TermsAndConditions,
       },
+
       {
         path: "/allCrops/:id",
+        Component: CropDetails,
+        // element: (
+        //   <PrivateRouter>
+        //     {" "}
+        //     <CropDetails></CropDetails>
+        //   </PrivateRouter>
+        // ),
+      },
+      {
+        path: "/crop/:id/interest",
         element: (
           <PrivateRouter>
-            {" "}
-            <CropDetails></CropDetails>
+            <SendInterest></SendInterest>
           </PrivateRouter>
         ),
+      },
+      {
+        path: "/crop/:id/received-interests",
+        element: (
+          <PrivateRouter>
+            <ReceivedInterests></ReceivedInterests>
+          </PrivateRouter>
+        ),
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRouter>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRouter>
+    ),
+    children: [
+      {
+        path: "addCrops",
+        Component: AddCrops,
+      },
+      {
+        path: "myInterest",
+        Component: MyInterest,
+      },
+      {
+        path: "myPost",
+        Component: MyPost,
+      },
+      {
+        path: "profile",
+        Component: Profile,
       },
     ],
   },

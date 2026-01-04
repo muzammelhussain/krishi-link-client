@@ -10,7 +10,7 @@ const LatestCrops = () => {
     const fetchCrops = async () => {
       try {
         const res = await fetch(
-          "https://krishi-link-api-server.vercel.app/products/latest"
+          "https://krishi-link-api-server.vercel.app/products"
         );
         const data = await res.json();
         setCrops(data);
@@ -25,8 +25,8 @@ const LatestCrops = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-yellow-100 via-green-100 to-yellow-50 shadow">
-      <section className="max-w-6xl mx-auto p-6  ">
+    <div className="bg-base-100 max-w-7xl mx-auto  ">
+      <section className="p-6  ">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-3xl font-bold">Latest Crops</h2>
           <Link to="/allCrops" className="btn btn-secondary">
@@ -39,7 +39,7 @@ const LatestCrops = () => {
             <span className="loading loading-spinner loading-lg"></span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {crops.length > 0 ? (
               crops.map((crop, index) => (
                 <div

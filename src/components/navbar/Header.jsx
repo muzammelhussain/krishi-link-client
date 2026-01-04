@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import logo from "../../assets/logo-farmer.jpg";
+import ThemeToggle from "../theme/ThemeToggle";
+
 const Header = () => {
   const { user, userLogout } = use(AuthContext);
-  //console.log(user);
+
   const handleLogout = () => {
     userLogout();
     toast.success("Logout successful!");
@@ -19,20 +21,26 @@ const Header = () => {
       <li>
         <NavLink to="/allCrops">All Crops</NavLink>
       </li>
+      <li>
+        <NavLink to="/about-us">About Us</NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact-us">Contact Us</NavLink>
+      </li>
+      <li>
+        <NavLink to="/blog">Blog</NavLink>
+      </li>
+      <li>
+        <NavLink to="/support">Help & Support</NavLink>
+      </li>
+      <li>
+        <NavLink to="/privacy-policy">Privacy Policy</NavLink>
+      </li>
 
       {user && (
         <>
           <li>
-            <NavLink to="/addCrops">Add Crops</NavLink>
-          </li>
-          <li>
-            <NavLink to="/myInterest">My Interest</NavLink>
-          </li>
-          <li>
-            <NavLink to="/myPost">My Post</NavLink>
-          </li>
-          <li>
-            <NavLink to="/profile">Profile</NavLink>
+            <NavLink to="/dashboard">Dashboard</NavLink>
           </li>
         </>
       )}
@@ -40,72 +48,80 @@ const Header = () => {
   );
 
   return (
-    <div>
-      <div className="navbar bg-base-100 shadow-sm">
+    <header className="bg-base-100 shadow-md sticky top-0 z-40">
+      <div className="navbar max-w-7xl mx-auto px-4">
+        {/* 🔹 Mobile Menu */}
         <div className="navbar-start">
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost lg:hidden z-50"
-            >
+          <div className="dropdown lg:hidden">
+            <label tabIndex={0} className="btn btn-ghost">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
                   d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
+                />
               </svg>
-            </div>
+            </label>
+
             <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 w-56 rounded-box bg-base-100 shadow z-50"
             >
               {links}
             </ul>
           </div>
-          <Link to="/home">
-            <span className="flex justify-center items-center">
-              <img className="h-10 w-10" src={logo} alt="" />
-              <p>Krishi Link</p>
-            </span>
+
+          {/* 🔹 Logo */}
+          <Link to="/home" className="flex items-center gap-2">
+            <img
+              className="h-9 w-9 rounded-full object-cover border-2 border-primary" // Added border using primary color
+              src={logo}
+              alt="Krishi Link Logo"
+            />
+            <p className="hidden sm:block">Krishi Link</p>
           </Link>
         </div>
+
+        {/* 🔹 Laptop & Desktop Menu */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{links}</ul>
+          <ul className="menu menu-horizontal gap-1">{links}</ul>
         </div>
+
+        {/* 🔹 Right Actions */}
         <div className="navbar-end flex items-center gap-2">
-          {!user && (
+          {!user ? (
             <>
-              <button className="btn btn-sm btn-primary px-4 md:px-8">
-                <NavLink to="/register">Register</NavLink>
-              </button>
-
-              <Link to="/login" className="btn btn-sm btn-primary px-4 md:px-8">
+              <NavLink
+                to="/register"
+                className="btn btn-sm btn-secondary hidden md:inline-flex"
+              >
+                Register
+              </NavLink>
+              <NavLink
+                to="/login"
+                className="btn btn-sm btn-outline btn-primary"
+              >
                 Login
-              </Link>
+              </NavLink>
             </>
-          )}
-
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="btn btn-sm btn-soft px-4 md:px-8"
-            >
+          ) : (
+            <button onClick={handleLogout} className="btn btn-sm btn-secondary">
               Logout
             </button>
           )}
+
+          {/* 🔹 Theme Toggle */}
+          <ThemeToggle />
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
