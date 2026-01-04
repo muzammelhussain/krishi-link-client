@@ -29,7 +29,7 @@ const LatestCrops = () => {
       <section className="p-6  ">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-3xl font-bold">Latest Crops</h2>
-          <Link to="/allCrops" className="btn btn-secondary">
+          <Link to="/allCrops" className="btn btn-sm bg-green-400">
             View All
           </Link>
         </div>

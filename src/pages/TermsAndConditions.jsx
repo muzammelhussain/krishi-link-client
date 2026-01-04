@@ -23,12 +23,12 @@ const TermsAndConditions = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-12 bg-base-100 rounded-lg shadow-lg">
+    <div className="container max-w-7xl mx-auto px-4 py-12 bg-base-100 rounded-lg shadow-lg">
       {/* Header */}
-      <h1 className="text-4xl font-extrabold text-neutral mb-2">
+      <h1 className="text-4xl font-extrabold text-base-content mb-2">
         Terms of Use 📜
       </h1>
-      <p className="text-lg text-secondary mb-8">
+      <p className="text-lg text-green-400 mb-8">
         By using KrishiLink, you agree to the following terms:
       </p>
 

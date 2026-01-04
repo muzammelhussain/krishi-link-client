@@ -9,9 +9,9 @@ const BlogTopics = () => {
   ];
 
   return (
-    <div className="card w-full bg-base-100 shadow-xl border border-base-300 p-6">
+    <div className="card max-w-7xl mx-auto bg-base-100  border border-base-100 p-6">
       {/* Header */}
-      <h2 className="card-title text-2xl text-primary mb-2">
+      <h2 className="card-title text-2xl text-green-400 mb-2">
         KrishiLink Blog 📰
       </h2>
       <p className="mb-6 text-sm">
@@ -20,12 +20,12 @@ const BlogTopics = () => {
       </p>
 
       {/* Latest Topics List */}
-      <h3 className="font-semibold text-neutral mb-3">Latest Topics</h3>
+      <h3 className="font-semibold text-green-400 mb-3">Latest Topics</h3>
       <ul className="list-none space-y-2">
         {latestTopics.map((topic, index) => (
           <li key={index} className="flex items-start text-base">
             <span className="text-secondary mr-2 mt-1">&gt;</span>
-            <span className="hover:text-primary transition-colors cursor-pointer">
+            <span className="hover:text-green-300 transition-colors cursor-pointer">
               {topic}
             </span>
           </li>

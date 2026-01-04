@@ -13,10 +13,15 @@ import {
 } from "react-icons/io";
 import Dashboard from "./Dashboard";
 import { FaChartBar } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 
 const DashboardLayout = () => {
-  const { user } = useContext(AuthContext);
+  const { user,userLogout } = useContext(AuthContext);
+   const handleLogout = () => {
+    userLogout();
+    toast.success("Logout successful!");
+  };
   return (
     <div>
       <Header></Header>
@@ -128,6 +133,13 @@ const DashboardLayout = () => {
       <IoMdSettings />
       <span className="is-drawer-close:hidden">Settings</span>
     </button>
+  </li>
+  <li>
+    
+            <button onClick={handleLogout} className="btn btn-sm bg-gray-400">
+              Logout
+            </button>
+          
   </li>
 </ul>
 

@@ -1,17 +1,14 @@
 import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
-import { toast } from "react-toastify";
+
 import logo from "../../assets/logo-farmer.jpg";
 import ThemeToggle from "../theme/ThemeToggle";
 
 const Header = () => {
-  const { user, userLogout } = use(AuthContext);
+  const { user } = use(AuthContext);
 
-  const handleLogout = () => {
-    userLogout();
-    toast.success("Logout successful!");
-  };
+ 
 
   const links = (
     <>
@@ -96,26 +93,24 @@ const Header = () => {
 
         {/* 🔹 Right Actions */}
         <div className="navbar-end flex items-center gap-2">
-          {!user ? (
-            <>
-              <NavLink
-                to="/register"
-                className="btn btn-sm btn-secondary hidden md:inline-flex"
-              >
-                Register
-              </NavLink>
-              <NavLink
-                to="/login"
-                className="btn btn-sm btn-outline btn-primary"
-              >
-                Login
-              </NavLink>
-            </>
-          ) : (
-            <button onClick={handleLogout} className="btn btn-sm btn-secondary">
-              Logout
-            </button>
-          )}
+         {!user && (
+  <>
+    <NavLink
+      to="/register"
+      className="btn btn-sm btn-secondary hidden md:inline-flex"
+    >
+      Register
+    </NavLink>
+
+    <NavLink
+      to="/login"
+      className="btn btn-sm btn-outline bg-primary"
+    >
+      Login
+    </NavLink>
+  </>
+)}
+
 
           {/* 🔹 Theme Toggle */}
           <ThemeToggle />
